@@ -1,3 +1,4 @@
+{-# LANGUAGE RankNTypes #-}
 {-| Each one of these folds is a drop-in replacement for an existing fold from
     the @pipes@ ecosystem, modified to accept 'Fold's or 'FoldM's from the
     @foldl@ library.  These folds are grouped by the module the original fold
@@ -12,8 +13,8 @@ module Pipes.Foldl (
     -- * Pipes.Parse
     , foldAll
     , foldAllM
-    , folds
-    , foldsM
+    --, folds
+    --, foldsM
 
     -- * Pipes.ByteString
     , foldBytes
@@ -57,15 +58,15 @@ foldAllM :: (Monad m) => FoldM m a b -> Parser a m b
 foldAllM (L.FoldM step begin done) = PP.foldAllM step begin done
 {-# INLINABLE foldAllM #-}
 
--- | Fold each 'Producer' of a 'FreeT'
-folds :: (Monad m) => Fold a b -> FreeT (Producer a m) m r -> Producer b m r
-folds (L.Fold step begin done) = PP.folds step begin done
-{-# INLINABLE folds #-}
+-- -- | Fold each 'Producer' of a 'FreeT'
+-- folds :: (Monad m) => Fold a b -> FreeT (Producer a m) m r -> Producer b m r
+-- folds (L.Fold step begin done) = _ step begin done
+-- {-# INLINABLE folds #-}
 
--- | Fold each 'Producer' of a 'FreeT', monadically
-foldsM :: (Monad m) => FoldM m a b -> FreeT (Producer a m) m r -> Producer b m r
-foldsM (L.FoldM step begin done) = PP.foldsM step begin done
-{-# INLINABLE foldsM #-}
+-- -- | Fold each 'Producer' of a 'FreeT', monadically
+-- foldsM :: (Monad m) => FoldM m a b -> FreeT (Producer a m) m r -> Producer b m r
+-- foldsM (L.FoldM step begin done) = _ step begin done
+-- {-# INLINABLE foldsM #-}
 
 -- | Reduce the stream of bytes using a strict left fold
 foldBytes :: (Monad m) => Fold Word8 b -> Producer ByteString m () -> m b

@@ -1,14 +1,19 @@
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TemplateHaskell       #-}
+{-# LANGUAGE TypeFamilies          #-}
 module Hierarchy where
 
 import           Control.Applicative
-import qualified Control.Foldl as CF
-import           Control.Lens
-import qualified Data.Foldable as F
-import qualified Data.Map.Lazy as M
-import           Data.Monoid (Monoid(..), Sum(Sum))
-import           Data.Text     (Text)
+import Control.Foldl (Fold(..))
+import qualified Control.Foldl       as CF
+import           Control.Lens hiding (Fold)
+import qualified Data.Foldable       as F
+import qualified Data.Map.Lazy       as M
+import           Data.Monoid         (Monoid (..), Sum (Sum))
+import           Data.Profunctor
+import Data.Set (Set)
+import           Data.Text           (Text)
 
 
 type Dim = String
@@ -41,7 +46,7 @@ foldTrades trades m = foldr fldMap m trades
 test :: M.Map Measure Double
 test = foldTrades trades M.empty
 
- 
+
 trades :: [Trade]
 trades = [ Trade "1CAD" M.empty $ M.fromList [("ONE", 1), ("TWO", 10), ("THREE", 1)]
          , Trade "1CAD" M.empty $ M.fromList [("ONE", 1), ("TWO", 11), ("FOUR", 20)]
@@ -57,9 +62,16 @@ foldMon
 foldMon mon trades =
   view _Wrapped <$> F.foldr (M.unionWith mappend) M.empty (fmap (view (_Unwrapping mon)) <$> trades ^.. traversed.measures)
 
-range :: (Ord a) => CF.Fold a (Maybe (a, b))
-range = sequenceOf both <$> CF.minimum <*> CF.maximum
+range :: (Ord a) => CF.Fold a (Maybe (a, a))
+range = fmap (sequenceOf both) $ (,) <$> CF.minimum <*> CF.maximum
 
+-- let one = CF.pretraverse (measures.ix "ONE") CF.sum
+-- let two = CF.pretraverse (measures.ix "TWO") range
+-- CF.fold ((,) <$> one <*> two) trades
+-- (3.0,Just (10.0,11.0))
 
--- ext :: (Maybe a, Maybe b) -> Maybe (a, b)
--- ext inp = (,) <$> _
+-- CF.fold (CF.pretraverse (measures) keys) trades
+keys
+  :: Ord k =>
+     Fold (M.Map k a) (Set k)
+keys = Fold M.union M.empty M.keysSet
