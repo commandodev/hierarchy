@@ -29,6 +29,7 @@ library
                      , pipes
                      , pipes-bytestring
                      , pipes-parse
+                     , pretty-show
                      , profunctors
                      , foldl
                      , text
