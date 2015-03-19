@@ -14,7 +14,7 @@ maintainer:          ben@perurbis.com
 -- category:            
 build-type:          Simple
 -- extra-source-files:  
-cabal-version:       >=1.10
+cabal-version:       >=1.22
 
 library
   exposed-modules:     Hierarchy
@@ -28,6 +28,7 @@ library
                      , lens
                      , pipes
                      , pipes-bytestring
+                     , pipes-extras
                      , pipes-parse
                      , pretty-show
                      , profunctors

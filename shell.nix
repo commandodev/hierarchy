@@ -1,19 +1,9 @@
 with (import <nixpkgs> {}).pkgs;
-let pkg = haskellngPackages.callPackage
-            ({ mkDerivation, base, containers, foldl, free, lens, pipes
-             , pipes-bytestring, pipes-parse, pretty-show, profunctors, stdenv
-             , text, transformers
-             }:
-             mkDerivation {
-               pname = "hierarchy";
-               version = "0.1.0.0";
-               src = ./.;
-               buildDepends = [
-                 base containers foldl free lens pipes pipes-bytestring pipes-parse
-                 pretty-show profunctors text transformers
-               ];
-               homepage = "https://github.com/boothead/heirarchy";
-               license = stdenv.lib.licenses.unfree;
-             }) {};
+let hspkgs = haskell-ng.packages.ghc784.override {
+     overrides = self: super: {
+       pipes-extras = self.callPackage ../pipes-extras {};
+       heirarchy = self.callPackage ./. {};
+      };
+   };
 in
-  pkg.env
+  hspkgs.heirarchy.env

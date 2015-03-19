@@ -6,7 +6,6 @@ module Pipes.Types where
 import           Control.Foldl
 import           Data.Profunctor
 
-
 instance Profunctor Fold where
   dimap f g (Fold step begin done) = Fold step' begin (g . done)
     where
