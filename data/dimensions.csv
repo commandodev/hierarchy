@@ -1,0 +1,10 @@
+Dimensions Target,Dimensions Legacy
+Book.BookName,BackOfficeBook
+Book.BusinessUnitName,BusinessUnitName
+Instruments.MaturityDate,Maturity Date
+Positions.AdminID,AdminNumber
+Positions.DealID,DealId
+Positions.TSecID,n/a
+Instruments.Product,TradeType
+Instruments.SettlementCurrency,Base Currency
+Deal.TradeDate,TradeDate

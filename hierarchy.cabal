@@ -18,23 +18,30 @@ cabal-version:       >=1.22
 
 library
   exposed-modules:     Hierarchy
+                     , Dimensions
                      , Pipes.Foldl
                      , Pipes.Types
   -- other-modules:       
   -- other-extensions:    
-  build-depends:       base >= 4.7
+  build-depends:       QuickCheck
+                     , base >= 4.7
+                     , bytestring >= 0.10.4.0
+                     , cassava
                      , containers
+                     , foldl
                      , free
                      , lens
                      , pipes
                      , pipes-bytestring
+                     , pipes-csv
                      , pipes-extras
                      , pipes-parse
                      , pretty-show
                      , profunctors
-                     , foldl
                      , text
                      , transformers
+                     , unordered-containers >= 0.2.5.1
+                     , vector >= 0.10.12.2
   hs-source-dirs:      src
   default-language:    Haskell2010
   ghc-options:       -Wall
